@@ -1,4 +1,4 @@
 ---
 layout: page
+title: This is page 3
 ---
-# This is page 3
