@@ -5,6 +5,11 @@
 ### the initial set up you won't need to come back to this file often.
 ###########################################################
 
+collections:
+  pages:
+    output: true
+    permalink: /_pages/:title:output_ext
+
 ############################
 # --- Required options --- #
 ############################
@@ -20,7 +25,7 @@ author: Willow Justin
 ###############################################
 
 navbar-links:
-  About: "about"
+  About: "_pages/about"
 
 ################
 # --- Logo --- #
