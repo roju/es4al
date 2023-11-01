@@ -1,4 +1,4 @@
 ---
 layout: page
-title: Willow Justin
+title: About
 ---
