@@ -1,9 +1,125 @@
 ---
 layout: page
-title: Willow’s Kinesthetic Learning Activity (KLA) Study
+title: Effectiveness Study For Algorithm Learning
 ---
+<script src="assets/js/survey.js"></script>
 
-<h2>Instructions on how to use this website:</h2>
+<style>
+    h3 {text-align: center;}
+</style>
+
+<h3>Welcome!</h3>
+<h3>Please answer the questions below to get started.</h3>
+<br>
+
+<form id="surveyForm">
+    <div class="rendered-form">
+        <div class="formbuilder-text form-group field-age">
+            <label for="age" class="formbuilder-text-label">How old are you?</label>
+            <input type="text" class="form-control" name="age" access="false" maxlength="2" id="age" value="33">
+        </div>
+        <div class="formbuilder-radio-group form-group field-cs_major">
+            <label for="cs_major" class="formbuilder-radio-group-label">Are you a computer science major?</label>
+            <div class="radio-group">
+                <div class="formbuilder-radio">
+                    <input name="cs_major" access="false" id="cs_major-0" value="1" type="radio" checked>
+                    <label for="cs_major-0">Yes</label>
+                </div>
+                <div class="formbuilder-radio">
+                    <input name="cs_major" access="false" id="cs_major-1" value="0" type="radio">
+                    <label for="cs_major-1">No</label>
+                </div>
+            </div>
+        </div>
+        <div class="formbuilder-radio-group form-group field-edu_level">
+            <label for="edu_level" class="formbuilder-radio-group-label">What is your education level?</label>
+            <div class="radio-group">
+                <div class="formbuilder-radio">
+                    <input name="edu_level" access="false" id="edu_level-0" value="1" type="radio" checked>
+                    <label for="edu_level-0">12th grade or less</label>
+                </div>
+                <div class="formbuilder-radio">
+                    <input name="edu_level" access="false" id="edu_level-1" value="2" type="radio">
+                    <label for="edu_level-1">Graduated high school or equivalent</label>
+                </div>
+                <div class="formbuilder-radio">
+                    <input name="edu_level" access="false" id="edu_level-2" value="3" type="radio">
+                    <label for="edu_level-2">Some college, no degree</label>
+                </div>
+                <div class="formbuilder-radio">
+                    <input name="edu_level" access="false" id="edu_level-3" value="4" type="radio">
+                    <label for="edu_level-3">Associate degree</label>
+                </div>
+                <div class="formbuilder-radio">
+                    <input name="edu_level" access="false" id="edu_level-4" value="5" type="radio">
+                    <label for="edu_level-4">Bachelor's degree</label>
+                </div>
+                <div class="formbuilder-radio">
+                    <input name="edu_level" access="false" id="edu_level-5" value="6" type="radio">
+                    <label for="edu_level-5">Post-graduate degree</label>
+                </div>
+            </div>
+        </div>
+        <div class="formbuilder-radio-group form-group field-race">
+            <label for="race" class="formbuilder-radio-group-label">Which racial category most accurately describes you?</label>
+            <div class="radio-group">
+                <div class="formbuilder-radio">
+                    <input name="race" access="false" id="race-0" value="1" type="radio" checked>
+                    <label for="race-0">Native American</label>
+                </div>
+                <div class="formbuilder-radio">
+                    <input name="race" access="false" id="race-1" value="2" type="radio">
+                    <label for="race-1">Asian</label>
+                </div>
+                <div class="formbuilder-radio">
+                    <input name="race" access="false" id="race-2" value="3" type="radio">
+                    <label for="race-2">Black or African American</label>
+                </div>
+                <div class="formbuilder-radio">
+                    <input name="race" access="false" id="race-3" value="4" type="radio">
+                    <label for="race-3">Hispanic, Latino or Spanish Origin</label>
+                </div>
+                <div class="formbuilder-radio">
+                    <input name="race" access="false" id="race-4" value="5" type="radio">
+                    <label for="race-4">Middle Eastern or North African</label>
+                </div>
+                <div class="formbuilder-radio">
+                    <input name="race" access="false" id="race-5" value="6" type="radio">
+                    <label for="race-5">Native Hawaiian or other Pacific Islander</label>
+                </div>
+                <div class="formbuilder-radio">
+                    <input name="race" access="false" id="race-6" value="7" type="radio">
+                    <label for="race-6">White</label>
+                </div>
+                <div class="formbuilder-radio">
+                    <input name="race" access="false" id="race-7" value="8" type="radio">
+                    <label for="race-7">Multiethnic</label>
+                </div>
+                <div class="formbuilder-radio">
+                    <input name="race" access="false" id="race-8" value="9" type="radio">
+                    <label for="race-8">Prefer not to disclose</label>
+                </div>
+            </div>
+        </div>
+        <div id="studentInfoNext">
+            <button type="button" onclick="saveStudentInfo()">Next</button>
+        </div>
+        <div class="loader" id="studentInfoLoader"></div>
+    </div>
+</form>
+
+
+<!-- <style>
+    h2 {text-align: center;}
+    p {text-align: center;}
+</style> -->
+
+<!-- <h2>Are you teacher or student?</h2>
+<p>
+    <a href="{{ '/pages/teacher_home' | absolute_url }}">Teacher</a><br>
+</p> -->
+
+<!-- <h2>Instructions on how to use this website:</h2>
 <ol>
     <li>Take pre-test</li>
     <li>Watch videos</li>
@@ -12,12 +128,12 @@ title: Willow’s Kinesthetic Learning Activity (KLA) Study
 
 <h2>Algorithms:</h2>
 <ul>
-    <li><a href="{{ '/_pages/bubble-sort' | absolute_url }}">Bubble Sort</a></li>
-    <li><a href="{{ '/_pages/insertion-sort' | absolute_url }}">Insertion Sort</a></li>
-    <li><a href="{{ '/_pages/merge-sort' | absolute_url }}">Merge Sort</a></li>
-    <li><a href="{{ '/_pages/quick-sort' | absolute_url }}">Quick Sort</a></li>
-</ul>
+    <li><a href="{{ '/pages/bubble-sort' | absolute_url }}">Bubble Sort</a></li>
+    <li><a href="{{ '/pages/insertion-sort' | absolute_url }}">Insertion Sort</a></li>
+    <li><a href="{{ '/pages/merge-sort' | absolute_url }}">Merge Sort</a></li>
+    <li><a href="{{ '/pages/quick-sort' | absolute_url }}">Quick Sort</a></li>
+</ul> -->
 
-<h2>Surveys:</h2>
+<!-- <h2>Surveys:</h2>
 <a href="https://docs.google.com/forms/d/e/1FAIpQLSe9HP_Cr-_-qL5esOsyubg7rW-LrtRguBuN0Rd1Cc8fthzH6w/viewform?usp=sf_link">Kinesthetic Learning Activity (KLA) Student Survey</a><br>
-<a href="https://docs.google.com/forms/d/e/1FAIpQLSfXuVwDpSR-UsjWy_4rRt7BQEJxSC-HwFYfhcqyF6Dan333_g/viewform?usp=sf_link">KLA at Teaching Survey Feedback</a>
+<a href="https://docs.google.com/forms/d/e/1FAIpQLSfXuVwDpSR-UsjWy_4rRt7BQEJxSC-HwFYfhcqyF6Dan333_g/viewform?usp=sf_link">KLA at Teaching Survey Feedback</a> -->

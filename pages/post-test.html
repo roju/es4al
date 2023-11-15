@@ -1,0 +1,17 @@
+---
+layout: page
+title: Post-test
+---
+<script src="{{ site.baseurl }}/assets/js/survey.js"></script>
+
+<div class="rendered-form">
+    <div class="formbuilder-text form-group field-score">
+        <label for="score" class="formbuilder-text-label">Score</label>
+        <input type="text" class="form-control" name="postTestScore" access="false" maxlength="3" id="postTestScore" value="80">
+    </div>
+</div>
+
+<div id="postTestNext">
+    <button type="button" onclick="savePostTest()">Next</button>
+</div>
+<div class="loader" id="postTestLoader"></div>

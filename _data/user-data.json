@@ -1,0 +1,43 @@
+{
+	"userData": [
+	  {
+		"assignedAlgorithm": "bubble",
+		"assignedLearningMethod": "dance",
+		"dummyData": true
+	  },
+	  {
+		"assignedAlgorithm": "quick",
+		"assignedLearningMethod": "animation",
+		"dummyData": true
+	  },
+	  {
+		"assignedAlgorithm": "merge",
+		"assignedLearningMethod": "lecture",
+		"dummyData": true
+	  },
+	  {
+		"assignedAlgorithm": "insertion",
+		"dummyData": true
+	  },
+	  {
+		"age": 32,
+		"cs_major": true,
+		"edu_level": 3,
+		"race": 7,
+		"assignedAlgorithm": "bubble",
+		"assignedLearningMethod": "dance",
+		"preTestScore": 55,
+		"postTestScore": 70
+	  },
+	  {
+		"age": 28,
+		"cs_major": false,
+		"edu_level": 2,
+		"race": 2,
+		"assignedAlgorithm": "quick",
+		"assignedLearningMethod": "animation",
+		"preTestScore": 60,
+		"postTestScore": 80
+	  }
+	]
+  }
