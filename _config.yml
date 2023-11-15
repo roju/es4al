@@ -26,6 +26,7 @@ author: Willow Justin
 
 navbar-links:
   About: "pages/about"
+  Teachers: "pages/teacher_home"
 
 ################
 # --- Logo --- #
