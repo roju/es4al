@@ -8,7 +8,7 @@
 collections:
   pages:
     output: true
-    permalink: /_pages/:title:output_ext
+    permalink: /pages/:title:output_ext
 
 ############################
 # --- Required options --- #
@@ -25,7 +25,7 @@ author: Willow Justin
 ###############################################
 
 navbar-links:
-  About: "_pages/about"
+  About: "pages/about"
 
 ################
 # --- Logo --- #
