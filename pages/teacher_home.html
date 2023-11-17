@@ -6,7 +6,18 @@ title: Data
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js"></script>
 <script src="{{ site.baseurl }}/assets/js/data-chart.js"></script>
 
-
+<style>
+    .options-container {
+        max-width: 400px;
+        margin: 20px auto;
+        display: flex;
+        justify-content: space-between;
+    }
+    .option {
+        width: 48%; /* Adjust the width as needed */
+        margin-bottom: 10px;
+    }
+</style>
 
 <div id="chartCanvas" style="display:none;">
     <canvas id="userDataChart" width="400" height="200"></canvas>
@@ -16,3 +27,62 @@ title: Data
 </div>
 
 
+<div class="options-container">
+    <div class="option">
+        <label>Color Category</label>
+        <br>
+        <div>
+            <input type="radio" name="radio-cc" value="ageGroup">
+            <label>Age Group</label>
+        </div>
+        <div>
+            <input type="radio" name="radio-cc" value="csMajor">
+            <label>CS Major</label>
+        </div>
+        <div>
+            <input type="radio" name="radio-cc" value="educationLevel">
+            <label>Education Level</label>
+        </div>
+        <div>
+            <input type="radio" name="radio-cc" value="race">
+            <label>Race</label>
+        </div>
+        <div>
+            <input type="radio" name="radio-cc" value="algorithm">
+            <label>Algorithm</label>
+        </div>
+        <div>
+            <input type="radio" name="radio-cc" value="learningMethod" checked>
+            <label>Learning Method</label>
+        </div>
+    </div>
+
+    <div class="option">
+        <label>X-Axis Category</label>
+        <br>
+        <div>
+            <input type="radio" name="radio-xc" value="ageGroup">
+            <label>Age Group</label>
+        </div>
+        <div>
+            <input type="radio" name="radio-xc" value="csMajor">
+            <label>CS Major</label>
+        </div>
+        <div>
+            <input type="radio" name="radio-xc" value="educationLevel">
+            <label>Education Level</label>
+        </div>
+        <div>
+            <input type="radio" name="radio-xc" value="race">
+            <label>Race</label>
+        </div>
+        <div>
+            <input type="radio" name="radio-xc" value="algorithm" checked>
+            <label>Algorithm</label>
+        </div>
+        <div>
+            <input type="radio" name="radio-xc" value="learningMethod">
+            <label>Learning Method</label>
+        </div>
+    </div>
+</div>

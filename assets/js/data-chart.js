@@ -1,26 +1,44 @@
+var userDataChart;
+var datasets;
+var chartOptions;
+
 document.addEventListener("DOMContentLoaded", async function() {
+    var colorCatRadios = document.getElementsByName("radio-cc");
+    if (colorCatRadios) {
+        for (var i = 0; i < colorCatRadios.length; i++) {
+            colorCatRadios[i].addEventListener("click", colorCatOptionChanged);
+        }
+    }
+    var xAxisCatRadios = document.getElementsByName("radio-xc");
+    if (xAxisCatRadios) {
+        for (var i = 0; i < xAxisCatRadios.length; i++) {
+            xAxisCatRadios[i].addEventListener("click", xAxisCatOptionChanged);
+        }
+    }
     userData = await getUserData();
     // console.log(JSON.stringify(userData, null, 2));
 
-    // show chart and hide loading indicator
+    chartOptions = {
+        colorCategory: 'learningMethod',
+        xAxisCategory: 'algorithm'
+    }
+
+    // Render chart
+    datasets = getChartDatasets(userData, chartOptions);
+    userDataChart = createChart(datasets, chartOptions);
+
+    // Show chart and hide loading indicator
     document.getElementById('chartCanvas').style.display="block";
     document.getElementById('chartLoader').style.display="none";
-
-    const chartOptions = {
-        colorCategory: 'learningMethod',
-        xAxisCategory: 'algorithm',
-        // yAxisValue: 'combinedScore'
-    };
-
-    renderChart(userData, chartOptions);
 });
 
-function renderChart(userData, chartOptions) {
+function getChartDatasets(userData, chartOptions) {
     var datasets = [];
     const colorCategoryItems = categories[chartOptions.colorCategory];
     colorCategoryItems.forEach((colorCategoryItem, index) => {
         const barData = getDataForItem(userData, index, chartOptions);
-        if (!barData) return; // Don't include color category items with no data
+        // Don't include color category items with no data
+        if (barData.preTestAvgs.every(s => s == 0)) return;
         // Lower portion of the bar
         datasets.push({
             label: `${colorCategoryItem} (pre)`,
@@ -40,12 +58,15 @@ function renderChart(userData, chartOptions) {
             stack: `Stack ${index}`
         })
     });
+    return datasets;
+}
 
+function createChart(datasets, chartOptions) {
     // Get the canvas element
     var ctx = document.getElementById('userDataChart').getContext('2d');
 
     // Create the bar chart
-    var userDataChart = new Chart(ctx, {
+    return new Chart(ctx, {
       type: 'bar',
       data: {
         labels: categories[chartOptions.xAxisCategory],
@@ -89,6 +110,33 @@ function getDataForItem(userData, colorCategoryItemIndex, chartOptions, scoreTyp
     }
     return barData;
 }
+
+function colorCatOptionChanged() {
+    const colorCatOption = getMultipleChoiceValue('radio-cc');
+    chartOptions.colorCategory = colorCatOption;
+    userDataChart.data.datasets = getChartDatasets(userData, chartOptions);
+    userDataChart.update();
+}
+
+function xAxisCatOptionChanged() {
+    const xAxisCatOption = getMultipleChoiceValue('radio-xc');
+    chartOptions.xAxisCategory = xAxisCatOption;
+    userDataChart.data.datasets = getChartDatasets(userData, chartOptions);
+    userDataChart.data.labels = categories[chartOptions.xAxisCategory];
+    userDataChart.update();
+}
+
+function getMultipleChoiceValue(name) {
+    var radios = document.getElementsByName(name);
+    var option = '';
+    for (var i = 0, length = radios.length; i < length; i++) {
+        if (radios[i].checked) {
+            option = radios[i].value;
+           break;
+         }
+    }
+    return option;
+};
 
 function getAgeGroup(age) {
     if (age <= 17) return 0;
