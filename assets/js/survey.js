@@ -7,14 +7,14 @@ document.addEventListener("DOMContentLoaded", function() {
 async function saveStudentInfo() {
     try {
         const age = getUserAge();
-        const cs_major = getMultipleChoiceValue('cs_major');
-        const edu_level = getMultipleChoiceValue('edu_level');
+        const csMajor = getMultipleChoiceValue('cs_major');
+        const educationLevel = getMultipleChoiceValue('edu_level');
         const race = getMultipleChoiceValue('race');
 
         let singleUserData = {
             age,
-            cs_major,
-            edu_level,
+            csMajor,
+            educationLevel,
             race
         }
         console.log(JSON.stringify(singleUserData, null, 2));
@@ -58,35 +58,39 @@ async function getAssignments() {
 }
 
 async function assignVideo() {
-    const videoLinks = {
-        bubble: {
-            dance: "https://www.youtube.com/embed/Iv3vgjM8Pv4",
-            animation: "https://www.youtube.com/embed/9I2oOAr2okY",
-            lecture: "https://www.youtube.com/embed/p__ETf2CKY4"
-        },
-        insertion: {
-            dance: "https://www.youtube.com/embed/EdIKIf9mHk0",
-            animation: "https://www.youtube.com/embed/JU767SDMDvA",
-            lecture: "https://www.youtube.com/embed/oTICKmJhLXI"
-        },
-        merge: {
-            dance: "https://www.youtube.com/embed/dENca26N6V4",
-            animation: "https://www.youtube.com/embed/5Z9dn2WTg9o",
-            lecture: "https://www.youtube.com/embed/mB5HXBb_HY8"
-        },
-        quick: {
-            dance: "https://www.youtube.com/embed/3San3uKKHgg",
-            animation: "https://www.youtube.com/embed/WprjBK0p6rw",
-            lecture: "https://www.youtube.com/embed/7h1s2SojIRw"
-        }
-    }
+    const videoLinks = [
+        // Bubble
+        [
+            "https://www.youtube.com/embed/Iv3vgjM8Pv4", // Dance
+            "https://www.youtube.com/embed/9I2oOAr2okY", // Animation
+            "https://www.youtube.com/embed/p__ETf2CKY4" // Lecture
+        ],
+        // Quick
+        [
+            "https://www.youtube.com/embed/3San3uKKHgg", // Dance
+            "https://www.youtube.com/embed/WprjBK0p6rw", // Animation
+            "https://www.youtube.com/embed/7h1s2SojIRw" // Lecture
+        ],
+        // Merge
+        [
+            "https://www.youtube.com/embed/dENca26N6V4", // Dance
+            "https://www.youtube.com/embed/5Z9dn2WTg9o", // Animation
+            "https://www.youtube.com/embed/mB5HXBb_HY8" // Lecture
+        ],
+        // Insertion
+        [
+            "https://www.youtube.com/embed/EdIKIf9mHk0", // Dance
+            "https://www.youtube.com/embed/JU767SDMDvA", // Animation
+            "https://www.youtube.com/embed/oTICKmJhLXI" // Lecture
+        ]
+    ];
     const singleUserData = getLocalSingleUserData();
     console.log(singleUserData);
-    const { assignedAlgorithm, assignedLearningMethod } = singleUserData;
-    console.log(assignedAlgorithm);
-    console.log(assignedLearningMethod);
+    const { algorithm, learningMethod } = singleUserData;
+    console.log(algorithm);
+    console.log(learningMethod);
     document.getElementById('video-frame').setAttribute("src",
-        videoLinks[`${assignedAlgorithm}`][`${assignedLearningMethod}`]
+        videoLinks[algorithm][learningMethod]
     );
 }
 
