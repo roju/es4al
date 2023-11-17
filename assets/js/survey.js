@@ -63,25 +63,25 @@ async function assignVideo() {
         [
             "https://www.youtube.com/embed/Iv3vgjM8Pv4", // Dance
             "https://www.youtube.com/embed/9I2oOAr2okY", // Animation
-            "https://www.youtube.com/embed/p__ETf2CKY4" // Lecture
+            "https://www.youtube.com/embed/A6m-g0SPzt0" // Lecture
         ],
         // Quick
         [
             "https://www.youtube.com/embed/3San3uKKHgg", // Dance
             "https://www.youtube.com/embed/WprjBK0p6rw", // Animation
-            "https://www.youtube.com/embed/7h1s2SojIRw" // Lecture
+            "https://www.youtube.com/embed/ZHVk2blR45Q" // Lecture
         ],
         // Merge
         [
             "https://www.youtube.com/embed/dENca26N6V4", // Dance
             "https://www.youtube.com/embed/5Z9dn2WTg9o", // Animation
-            "https://www.youtube.com/embed/mB5HXBb_HY8" // Lecture
+            "https://www.youtube.com/embed/qdv3i6X0PiQ" // Lecture
         ],
         // Insertion
         [
             "https://www.youtube.com/embed/EdIKIf9mHk0", // Dance
             "https://www.youtube.com/embed/JU767SDMDvA", // Animation
-            "https://www.youtube.com/embed/oTICKmJhLXI" // Lecture
+            "https://www.youtube.com/embed/eTvQIbB-AuE" // Lecture
         ]
     ];
     const singleUserData = getLocalSingleUserData();
