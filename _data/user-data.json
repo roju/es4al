@@ -1,25 +1,6 @@
 {
   "userData": [
     {
-      "algorithm": 0,
-      "learningMethod": 0,
-      "dummyData": true
-    },
-    {
-      "algorithm": 1,
-      "learningMethod": 1,
-      "dummyData": true
-    },
-    {
-      "algorithm": 2,
-      "learningMethod": 2,
-      "dummyData": true
-    },
-    {
-      "algorithm": 3,
-      "dummyData": true
-    },
-    {
       "age": 32,
       "csMajor": 1,
       "educationLevel": 2,
