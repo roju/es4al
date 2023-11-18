@@ -1,7 +1,19 @@
 import { videoIds } from './constants.js'
+import { testQuestions } from './test-questions.js'
+
+window.saveStudentInfo = saveStudentInfo;
+window.savePreTest = savePreTest;
+window.savePostTest = savePostTest;
+
 document.addEventListener("DOMContentLoaded", function() {
     if (window.location.pathname.endsWith('/video/')) {
         assignVideo();
+    }
+    else if (window.location.pathname.endsWith('/pre-test/')) {
+        generateQuestions();
+    }
+    else if (window.location.pathname.endsWith('/post-test/')) {
+        generateQuestions();
     }
 });
 
@@ -58,6 +70,63 @@ async function getAssignments() {
     }
 }
 
+function generateQuestions() {
+    const singleUserData = getLocalSingleUserData();
+    const { algorithm } = singleUserData;
+    var container = document.getElementById("questions-container");
+
+    testQuestions[`${algorithm}`].forEach((questionData, index) => {
+        var questionContainer = document.createElement("div");
+        questionContainer.classList.add("question-container");
+
+        var questionText = document.createElement("p");
+        questionText.textContent = (index + 1) + ". " + questionData.question;
+        questionContainer.appendChild(questionText);
+
+        questionData.answers.forEach((option, optionIndex) => {
+            var label = document.createElement("label");
+            var radio = document.createElement("input");
+            radio.type = "radio";
+            radio.name = "question" + index;
+            radio.value = optionIndex;
+            radio.id = "q" + index + "option" + optionIndex;
+
+            label.appendChild(radio);
+            label.appendChild(document.createTextNode(" " + option));
+
+            questionContainer.appendChild(label);
+            questionContainer.appendChild(document.createElement("br"));
+        });
+
+        container.appendChild(questionContainer);
+    });
+}
+
+function scoreTest(algorithm) {
+    var correctAnswers = 0;
+    testQuestions[`${algorithm}`].forEach((questionData, index) => {
+        const answer = getMultipleChoiceValue(`question${index}`);
+        if (answer == questionData.correctAnswer) {
+            correctAnswers += 1;
+        }
+    });
+    const questionCount = testQuestions[`${algorithm}`].length;
+    return (correctAnswers / questionCount) * 100;
+}
+
+function savePreTest() {
+    try {
+        var singleUserData = getLocalSingleUserData();
+        const score = scoreTest(singleUserData.algorithm);
+        singleUserData.preTestScore = score;
+        localStorage.setItem('singleUserData', JSON.stringify(singleUserData));
+        window.location.href = '/pages/video';
+    }
+    catch (err) {
+        alert(err);
+    }
+}
+
 function assignVideo() {
     const singleUserData = getLocalSingleUserData();
     console.log(singleUserData);
@@ -67,6 +136,25 @@ function assignVideo() {
     document.getElementById('video-frame').setAttribute("src",
         `https://www.youtube.com/embed/${videoIds[algorithm][learningMethod]}`
     );
+}
+
+async function savePostTest() {
+    try {
+        var singleUserData = getLocalSingleUserData();
+        const score = scoreTest(singleUserData.algorithm);
+        singleUserData.preTestScore = score;
+        console.log(singleUserData);
+        // show loading indicator while waiting for upload
+        document.getElementById('postTestNext').style.display="none";
+        document.getElementById('postTestLoader').style.display="block";
+        await uploadDataToCloud(singleUserData);
+        localStorage.clear();
+        window.location.href = '/';
+    }
+    catch (err) {
+        console.log(err);
+        alert(err);
+    }
 }
 
 async function uploadDataToCloud(singleUserData) {
@@ -102,42 +190,6 @@ export function getLocalSingleUserData() {
         throw Error('Student info not found. Please start from the home page.');
     }
     return singleUserData;
-}
-
-function savePreTest() {
-    try {
-        var singleUserData = getLocalSingleUserData();
-        const score = document.getElementById('preTestScore').value;
-        singleUserData.preTestScore = Number(score);
-        localStorage.setItem('singleUserData', JSON.stringify(singleUserData));
-        window.location.href = '/pages/video';
-    }
-    catch (err) {
-        alert(err);
-    }
-}
-
-async function savePostTest() {
-    try {
-        var singleUserData = getLocalSingleUserData();
-        const score = document.getElementById('postTestScore').value;
-        singleUserData.postTestScore = Number(score);
-        console.log(singleUserData);
-        // show loading indicator while waiting for upload
-        document.getElementById('postTestNext').style.display="none";
-        document.getElementById('postTestLoader').style.display="block";
-        await uploadDataToCloud(singleUserData);
-        localStorage.clear();
-        window.location.href = '/';
-    }
-    catch (err) {
-        console.log(err);
-        alert(err);
-    }
-}
-
-function videoFinished() {
-    window.location.href = '/pages/post-test';
 }
 
 function getMultipleChoiceValue(name) {
