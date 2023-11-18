@@ -2,7 +2,12 @@
 layout: page
 title: Video
 ---
-<script src="{{ site.baseurl }}/assets/js/survey.js"></script>
+<script src="{{ site.baseurl }}/assets/js/survey.js" type="module"></script>
+<script>
+    function videoFinished() {
+        window.location.href = '/pages/post-test';
+    }
+</script>
 
 <div class="hidden-video" id="video-div">
     <iframe id="video-frame" frameborder="0" allowfullscreen></iframe>

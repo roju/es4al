@@ -1,6 +1,11 @@
+import { chartColors, categories } from './constants.js'
+
+var userData;
 var userDataChart;
-var datasets;
-var chartOptions;
+var chartOptions = {
+    colorCategory: 'learningMethod',
+    xAxisCategory: 'algorithm'
+};
 
 document.addEventListener("DOMContentLoaded", async function() {
     var colorCatRadios = document.getElementsByName("radio-cc");
@@ -16,20 +21,16 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
     }
     userData = await getUserData();
+    userData.forEach(student => student.ageGroup = getAgeGroup(student.age));
     // console.log(JSON.stringify(userData, null, 2));
 
-    chartOptions = {
-        colorCategory: 'learningMethod',
-        xAxisCategory: 'algorithm'
-    }
-
-    // Render chart
-    datasets = getChartDatasets(userData, chartOptions);
-    userDataChart = createChart(datasets, chartOptions);
-
-    // Show chart and hide loading indicator
+    // Show chart canvas and hide loading indicator
     document.getElementById('chartCanvas').style.display="block";
     document.getElementById('chartLoader').style.display="none";
+
+    // Render chart
+    const datasets = getChartDatasets(userData, chartOptions);
+    userDataChart = createChart(datasets, chartOptions);
 });
 
 function getChartDatasets(userData, chartOptions) {
@@ -81,9 +82,10 @@ function createChart(datasets, chartOptions) {
     });
 }
 
-function getDataForItem(userData, colorCategoryItemIndex, chartOptions, scoreType) {
+function getDataForItem(allUserData, colorCategoryItemIndex, chartOptions) {
     // Get all students for the current color category item
-    userData = userData.filter(student => student[chartOptions.colorCategory] == colorCategoryItemIndex);
+    const colorItemStudents = allUserData.filter(student =>
+        student[chartOptions.colorCategory] == colorCategoryItemIndex);
 
     var barData = {
         preTestAvgs: [], // List of pre-test score averages
@@ -92,7 +94,8 @@ function getDataForItem(userData, colorCategoryItemIndex, chartOptions, scoreTyp
     // Iterate through all the x axis category items
     for (let i = 0; i < categories[chartOptions.xAxisCategory].length; i++) {
         // Get all students for the current x axis category item
-        const xItemStudents = userData.filter(student => student[chartOptions.xAxisCategory] == i);
+        const xItemStudents = colorItemStudents.filter(student =>
+            student[chartOptions.xAxisCategory] == i);
         // Leave an empty space without a bar when there is no data
         if (xItemStudents.length == 0) {
             barData.preTestAvgs.push(0);
@@ -100,8 +103,10 @@ function getDataForItem(userData, colorCategoryItemIndex, chartOptions, scoreTyp
             continue;
         }
         // Find the pre-test and post-test score averages
-        const preTestAvg = xItemStudents.reduce((acc, cur) => acc + cur.preTestScore, 0) / xItemStudents.length;
-        const postTestAvg = xItemStudents.reduce((acc, cur) => acc + cur.postTestScore, 0) / xItemStudents.length;
+        const preTestAvg = xItemStudents.reduce((acc, cur) =>
+            acc + cur.preTestScore, 0) / xItemStudents.length;
+        const postTestAvg = xItemStudents.reduce((acc, cur) =>
+            acc + cur.postTestScore, 0) / xItemStudents.length;
 
         // Pre-test score average is the lower portion of the bar
         barData.preTestAvgs.push(preTestAvg);
@@ -112,21 +117,21 @@ function getDataForItem(userData, colorCategoryItemIndex, chartOptions, scoreTyp
 }
 
 function colorCatOptionChanged() {
-    const colorCatOption = getMultipleChoiceValue('radio-cc');
+    const colorCatOption = getChartOptionValue('radio-cc');
     chartOptions.colorCategory = colorCatOption;
     userDataChart.data.datasets = getChartDatasets(userData, chartOptions);
     userDataChart.update();
 }
 
 function xAxisCatOptionChanged() {
-    const xAxisCatOption = getMultipleChoiceValue('radio-xc');
+    const xAxisCatOption = getChartOptionValue('radio-xc');
     chartOptions.xAxisCategory = xAxisCatOption;
     userDataChart.data.datasets = getChartDatasets(userData, chartOptions);
     userDataChart.data.labels = categories[chartOptions.xAxisCategory];
     userDataChart.update();
 }
 
-function getMultipleChoiceValue(name) {
+function getChartOptionValue(name) {
     var radios = document.getElementsByName(name);
     var option = '';
     for (var i = 0, length = radios.length; i < length; i++) {
@@ -160,80 +165,10 @@ async function getUserData() {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        resJson = await response.json();
-        let userData = resJson.userData;
-        userData = userData.filter(student => !student.dummyData);
-        userData.forEach(student => student.ageGroup = getAgeGroup(student.age));
-        return userData;
+        const resJson = await response.json();
+        return resJson.userData;
     }
     catch(err) {
         console.log(err);
     }
 }
-
-/*
-    Definitions
-    Category: properties on the 'category' object (ageGroup, csMajor etc)
-    Item: Array elements in each category (Asian, Merge Sort, etc)
-*/
-const categories = {
-    ageGroup: [
-        '17 or less',
-        '18-24',
-        '25-34',
-        '35-49',
-        '50-64',
-        '65 plus',
-    ],
-    csMajor: [
-        'Not CS major',
-        'CS major'
-    ],
-    educationLevel: [
-        '12th or less',
-        'Grad HS',
-        'Some college',
-        'Associate',
-        'Bachelor',
-        'Post grad'
-    ],
-    race: [
-        'Native American',
-        'Asian',
-        'Black',
-        'Hispanic',
-        'Middle Eastern',
-        'Pacific Islander',
-        'White',
-        'Multiethnic',
-        'Unknown'
-    ],
-    algorithm: [
-        'Bubble Sort',
-        'Quick Sort',
-        'Merge Sort',
-        'Insertion Sort'
-    ],
-    learningMethod: [
-        'Dance',
-        'Animation',
-        'Lecture'
-    ]
-}
-
-const chartColors = [
-    '0,128,255',		// Blue
-    '255,0,0',			// Red
-    '0,255,0',			// Lime
-    '255,255,0',		// Yellow
-    '0,255,255',		// Cyan
-    '255,0,255',		// Magenta
-    '192,192,192',		// Silver
-    '128,128,128',		// Gray
-    '128,0,0',			// Maroon
-    '128,128,0',		// Olive
-    '0,128,0',			// Green
-    '128,0,128',		// Purple
-    '0,128,128',		// Teal
-    '0,0,128',			// Navy
-];

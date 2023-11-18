@@ -1,3 +1,4 @@
+import { videoIds } from './constants.js'
 document.addEventListener("DOMContentLoaded", function() {
     if (window.location.pathname.endsWith('/video/')) {
         assignVideo();
@@ -49,7 +50,7 @@ async function getAssignments() {
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        resJson = await response.json();
+        const resJson = await response.json();
         return resJson;
     }
     catch(err) {
@@ -57,40 +58,14 @@ async function getAssignments() {
     }
 }
 
-async function assignVideo() {
-    const videoLinks = [
-        // Bubble
-        [
-            "https://www.youtube.com/embed/Iv3vgjM8Pv4", // Dance
-            "https://www.youtube.com/embed/9I2oOAr2okY", // Animation
-            "https://www.youtube.com/embed/A6m-g0SPzt0" // Lecture
-        ],
-        // Quick
-        [
-            "https://www.youtube.com/embed/3San3uKKHgg", // Dance
-            "https://www.youtube.com/embed/WprjBK0p6rw", // Animation
-            "https://www.youtube.com/embed/ZHVk2blR45Q" // Lecture
-        ],
-        // Merge
-        [
-            "https://www.youtube.com/embed/dENca26N6V4", // Dance
-            "https://www.youtube.com/embed/5Z9dn2WTg9o", // Animation
-            "https://www.youtube.com/embed/qdv3i6X0PiQ" // Lecture
-        ],
-        // Insertion
-        [
-            "https://www.youtube.com/embed/EdIKIf9mHk0", // Dance
-            "https://www.youtube.com/embed/JU767SDMDvA", // Animation
-            "https://www.youtube.com/embed/eTvQIbB-AuE" // Lecture
-        ]
-    ];
+function assignVideo() {
     const singleUserData = getLocalSingleUserData();
     console.log(singleUserData);
     const { algorithm, learningMethod } = singleUserData;
     console.log(algorithm);
     console.log(learningMethod);
     document.getElementById('video-frame').setAttribute("src",
-        videoLinks[algorithm][learningMethod]
+        `https://www.youtube.com/embed/${videoIds[algorithm][learningMethod]}`
     );
 }
 
@@ -115,7 +90,7 @@ async function uploadDataToCloud(singleUserData) {
     }
 }
 
-function getLocalSingleUserData() {
+export function getLocalSingleUserData() {
     var singleUserData = null;
     try {
         singleUserData = JSON.parse(localStorage.getItem("singleUserData"));
@@ -186,8 +161,4 @@ function getUserAge() {
         throw Error('Age must be a number')
     }
     return Number(age);
-}
-
-function assignAlgorithm() {
-
 }
