@@ -142,7 +142,7 @@ async function savePostTest() {
     try {
         var singleUserData = getLocalSingleUserData();
         const score = scoreTest(singleUserData.algorithm);
-        singleUserData.preTestScore = score;
+        singleUserData.postTestScore = score;
         console.log(singleUserData);
         // show loading indicator while waiting for upload
         document.getElementById('postTestNext').style.display="none";
