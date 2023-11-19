@@ -3,11 +3,21 @@ layout: page
 title: Post-test
 ---
 <script src="{{ site.baseurl }}/assets/js/survey.js" type="module"></script>
+<script>
+    function surveyFinished() {
+        localStorage.clear();
+        window.location.href = '/pages/finish';
+    }
+</script>
 
 <div id="questions-container"></div>
+<div id="results-container"></div>
 
 <br>
 <div id="postTestNext">
-    <button type="button" onclick="savePostTest()">Finish</button>
+    <button type="button" onclick="savePostTest()">Submit</button>
+</div>
+<div id="surveyFinish" style="display: none;">
+    <button type="button" onclick="surveyFinished()">Finish</button>
 </div>
 <div class="loader" id="postTestLoader"></div>

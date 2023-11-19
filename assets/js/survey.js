@@ -1,9 +1,11 @@
 import { videoIds } from './constants.js'
 import { testQuestions } from './test-questions.js'
+const letterOptions = ['a', 'b', 'c', 'd'];
 
 window.saveStudentInfo = saveStudentInfo;
 window.savePreTest = savePreTest;
 window.savePostTest = savePostTest;
+window.checkAnswers = checkAnswers;
 
 document.addEventListener("DOMContentLoaded", function() {
     if (window.location.pathname.endsWith('/video/')) {
@@ -92,7 +94,7 @@ function generateQuestions() {
             radio.id = "q" + index + "option" + optionIndex;
 
             label.appendChild(radio);
-            label.appendChild(document.createTextNode(" " + option));
+            label.appendChild(document.createTextNode(` ${letterOptions[optionIndex]}) ${option}`));
 
             questionContainer.appendChild(label);
             questionContainer.appendChild(document.createElement("br"));
@@ -148,13 +150,59 @@ async function savePostTest() {
         document.getElementById('postTestNext').style.display="none";
         document.getElementById('postTestLoader').style.display="block";
         await uploadDataToCloud(singleUserData);
-        localStorage.clear();
-        window.location.href = '/';
+        checkAnswers(singleUserData);
+        document.getElementById('postTestLoader').style.display="none";
+        document.getElementById('surveyFinish').style.display="block";
     }
     catch (err) {
         console.log(err);
         alert(err);
     }
+}
+
+function checkAnswers(singleUserData) {
+    const { algorithm } = singleUserData;
+    var resultContainer = document.getElementById("results-container");
+    resultContainer.innerHTML = ""; // Clear previous results
+
+    testQuestions[`${algorithm}`].forEach((questionData, index) => {
+        const selectedAnswer = getSelectedAnswer(index);
+        console.log(selectedAnswer);
+        console.log(questionData.correctAnswer);
+        const isCorrect = selectedAnswer == questionData.correctAnswer;
+
+        var resultText = document.createElement("p");
+        resultText.textContent = (index + 1) + ". " + questionData.question + " - ";
+        resultText.textContent += isCorrect ? "Correct" : "Incorrect";
+        resultText.style.color = isCorrect ? "green" : "red";
+
+        if (!isCorrect) {
+            var correctAnswerText = document.createElement("span");
+            correctAnswerText.textContent =
+                " Correct answer: " + letterOptions[questionData.correctAnswer];
+            correctAnswerText.style.fontWeight = "bold";
+            resultText.appendChild(correctAnswerText);
+        }
+        resultContainer.appendChild(resultText);
+    });
+
+    var preTestScoreText = document.createElement("p");
+    var postTestScoreText = document.createElement("p");
+    const { preTestScore, postTestScore } = singleUserData;
+    preTestScoreText.textContent = `Pre-test score: ${preTestScore}%`;
+    postTestScoreText.textContent = `Post-test score: ${postTestScore}%`;
+    resultContainer.appendChild(preTestScoreText);
+    resultContainer.appendChild(postTestScoreText);
+}
+
+function getSelectedAnswer(questionIndex) {
+    var radioButtons = document.getElementsByName("question" + questionIndex);
+    for (var i = 0; i < radioButtons.length; i++) {
+        if (radioButtons[i].checked) {
+            return Number(radioButtons[i].value);
+        }
+    }
+    return null;
 }
 
 async function uploadDataToCloud(singleUserData) {
