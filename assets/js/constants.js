@@ -106,7 +106,7 @@ it means that as the number of items (n) increases, the time it takes to sort ro
 grows in proportion to n times the logarithm of n.\n
 Space complexity is similar, but it describes how much extra memory or space an \
 algorithm needs to perform the sorting. Algorithms that create additional arrays \
-(which increase in size as the input increases) will have a higher space complexity \
+(which increase in size as the input size increases) will have a higher space complexity \
 than those that don’t. For example: a space complexity of O(1) is constant, meaning \
 that the array is sorted in-place, which is the lowest possible space complexity and \
 the most memory efficient.
