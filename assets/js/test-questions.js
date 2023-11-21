@@ -46,7 +46,7 @@ export const testQuestions = {
                 'It requires additional memory space.',
                 'It is not suitable for large datasets.',
                 'It has a complex implementation.',
-                'It has a time complexity of O(1).',
+                'It has a time complexity of O(n log n).',
             ],
             correctAnswer: 1
         },
@@ -140,7 +140,7 @@ export const testQuestions = {
                 'When the array size is less than 2',
                 'When the array size is an even number',
                 'When the array is sorted in descending order',
-                'When the array size is greater than 100',
+                'When the array size is equal to the input size',
             ],
             correctAnswer: 0
         },
@@ -152,7 +152,7 @@ export const testQuestions = {
                 'O(log n)',
                 'O(n^2)',
             ],
-            correctAnswer: 1
+            correctAnswer: 0
         },
     ],
     3: [ // Insertion Sort
