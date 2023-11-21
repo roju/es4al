@@ -23,9 +23,9 @@ document.addEventListener("DOMContentLoaded", function() {
 async function saveStudentInfo() {
     try {
         const age = getUserAge();
-        const csMajor = getMultipleChoiceValue('cs_major');
-        const educationLevel = getMultipleChoiceValue('edu_level');
-        const race = getMultipleChoiceValue('race');
+        const csMajor = getMultipleChoiceValue('CS Major');
+        const educationLevel = getMultipleChoiceValue('Education Level');
+        const race = getMultipleChoiceValue('Race');
 
         let singleUserData = {
             age,
@@ -103,7 +103,7 @@ function generateQuestions() {
             var label = document.createElement("label");
             var radio = document.createElement("input");
             radio.type = "radio";
-            radio.name = "question" + index;
+            radio.name = `Question ${index + 1}`;
             radio.value = optionIndex;
             radio.id = "q" + index + "option" + optionIndex;
 
@@ -121,7 +121,7 @@ function generateQuestions() {
 function scoreTest(algorithm) {
     var correctAnswers = 0;
     testQuestions[`${algorithm}`].forEach((questionData, index) => {
-        const answer = getMultipleChoiceValue(`question${index}`);
+        const answer = getMultipleChoiceValue(`Question ${index + 1}`);
         if (answer == questionData.correctAnswer) {
             correctAnswers += 1;
         }
@@ -270,7 +270,7 @@ function getMultipleChoiceValue(name) {
 };
 
 function getUserAge() {
-    var age = document.getElementById('age').value;
+    var age = document.getElementById('Age').value;
     if (!age || isNaN(age)) {
         throw Error('Age must be a number')
     }
