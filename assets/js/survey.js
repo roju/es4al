@@ -1,4 +1,4 @@
-import { videoIds } from './constants.js'
+import { videoIds, tmSpcCmplxExpl } from './constants.js'
 import { testQuestions } from './test-questions.js'
 const letterOptions = ['a', 'b', 'c', 'd'];
 
@@ -6,6 +6,7 @@ window.saveStudentInfo = saveStudentInfo;
 window.savePreTest = savePreTest;
 window.savePostTest = savePostTest;
 window.checkAnswers = checkAnswers;
+window.showTmSpcCmplxExpl = showTmSpcCmplxExpl;
 
 document.addEventListener("DOMContentLoaded", function() {
     if (window.location.pathname.endsWith('/video/')) {
@@ -70,6 +71,19 @@ async function getAssignments() {
     catch(err) {
         console.log(err);
     }
+}
+
+function showTmSpcCmplxExpl() {
+    var explanationContainer = document.getElementById("explanation-container");
+    var tmSpcCmplxExplLink = document.getElementById("tmSpcCmplxExplLink");
+    if (explanationContainer.innerHTML == '') {
+        explanationContainer.innerHTML = tmSpcCmplxExpl;
+        tmSpcCmplxExplLink.innerHTML = 'Hide explanation';
+    } else {
+        explanationContainer.innerHTML = '';
+        tmSpcCmplxExplLink.innerHTML = 'What is time/space complexity?';
+    }
+
 }
 
 function generateQuestions() {

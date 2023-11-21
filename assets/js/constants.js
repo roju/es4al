@@ -94,4 +94,20 @@ export const categories = {
         'Animation',
         'Lecture'
     ]
-}
+};
+
+// time and space complexity explanation
+export const tmSpcCmplxExpl = `
+Imagine sorting numbers like organizing a deck of cards. \
+Time complexity is like asking, “How much longer will it take to sort two decks \
+instead of one?”\n
+Big O notation is a way to describe this. If I say a sorting method is O(n log n), \
+it means that as the number of items (n) increases, the time it takes to sort roughly \
+grows in proportion to n times the logarithm of n.\n
+Space complexity is similar, but it describes how much extra memory or space an \
+algorithm needs to perform the sorting. Algorithms that create additional arrays \
+(which increase in size as the input increases) will have a higher space complexity \
+than those that don’t. For example: a space complexity of O(1) is constant, meaning \
+that the array is sorted in-place, which is the lowest possible space complexity and \
+the most memory efficient.
+`;
