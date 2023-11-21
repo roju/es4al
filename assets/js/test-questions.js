@@ -11,24 +11,24 @@ export const testQuestions = {
             correctAnswer: 2
         },
         {
-            question: 'In Bubble Sort, how are adjacent elements compared and swapped?',
+            question: 'What is the main advantage of the bubble sort algorithm?',
             answers: [
-                'Elements with the largest values',
-                'Elements with the smallest values',
-                'Elements at even indices',
-                'Elements at odd indices',
-            ],
-            correctAnswer: 0
-        },
-        {
-            question: 'Which of the following statements is true regarding the Bubble Sort algorithm?',
-            answers: [
-                'It is an example of a divide-and-conquer algorithm.',
-                'It is inherently stable.',
-                'It always performs better than quicksort.',
-                'It has a constant space complexity.',
+                'It is highly efficient for large datasets',
+                'It is easy to implement',
+                'It requires minimal memory usage',
+                'It guarantees the fastest sorting time',
             ],
             correctAnswer: 1
+        },
+        {
+            question: 'When the first pass of the bubble sort algorithm is completed, what was achieved?',
+            answers: [
+                'The median element is identified',
+                'The smallest element is moved to the beginning of the list',
+                'The largest element is moved to the end of the list',
+                'The array is divided into sub-arrays',
+            ],
+            correctAnswer: 2
         },
         {
             question: 'What is the best-case time complexity of the Bubble Sort algorithm when the input array is already sorted?',
@@ -73,12 +73,12 @@ export const testQuestions = {
             correctAnswer: 3
         },
         {
-            question: 'Quick Sort is a comparison-based sorting algorithm that falls under which category?',
+            question: 'In Quick Sort, what is the purpose of the recursive calls?',
             answers: [
-                'Divide and Conquer',
-                'Greedy Algorithms',
-                'Dynamic Programming',
-                'Backtracking',
+                'To divide the array into subarrays',
+                'To merge sorted subarrays',
+                'To find the median element',
+                'To select the pivot',
             ],
             correctAnswer: 0
         },
@@ -93,12 +93,12 @@ export const testQuestions = {
             correctAnswer: 1
         },
         {
-            question: 'Quick Sort is often preferred over other sorting algorithms because:',
+            question: 'What happens when the subarrays in Quick Sort become sufficiently small?',
             answers: [
-                'It has a stable time complexity in all cases',
-                'It has a simple and easy-to-implement logic',
-                'It can be easily adapted for parallel processing',
-                'It does not require recursion',
+                'They are ignored',
+                'They are sorted using insertion sort',
+                'They are merged into a single array',
+                'They are randomly shuffled',
             ],
             correctAnswer: 2
         },
@@ -128,29 +128,29 @@ export const testQuestions = {
             question: 'Merge Sort is a stable sorting algorithm. What does "stable" mean in this context?',
             answers: [
                 'It always sorts elements in descending order.',
-                'The relative order of equal elements remains unchanged after sorting.',
                 'It has a fixed time complexity.',
                 'It can handle large datasets efficiently.',
+                'The relative order of equal elements remains unchanged after sorting.',
             ],
-            correctAnswer: 1
+            correctAnswer: 3
         },
         {
-            question: 'What is the main advantage of the Merge Sort algorithm over other sorting algorithms?',
+            question: 'In merge sort, when are the recursive calls for dividing the array stopped?',
             answers: [
-                'It has a time complexity of O(n^2) in the worst case.',
-                'It requires minimal additional memory space.',
-                'It is an in-place sorting algorithm.',
-                'It guarantees a linear time complexity for all inputs.',
+                'When the array size is less than 2',
+                'When the array size is an even number',
+                'When the array is sorted in descending order',
+                'When the array size is greater than 100',
             ],
-            correctAnswer: 1
+            correctAnswer: 0
         },
         {
-            question: 'Merge Sort is a classic example of a:',
+            question: 'What is the space complexity of merge sort?',
             answers: [
-                'Greedy algorithm',
-                'Divide and Conquer algorithm',
-                'Dynamic Programming algorithm',
-                'Backtracking algorithm',
+                'O(n)',
+                'O(1)',
+                'O(log n)',
+                'O(n^2)',
             ],
             correctAnswer: 1
         },
@@ -177,12 +177,12 @@ export const testQuestions = {
             correctAnswer: 1
         },
         {
-            question: 'Insertion Sort is considered an adaptive algorithm because:',
+            question: 'In insertion sort, where does the algorithm start comparing elements?',
             answers: [
-                'It adapts its behavior based on the input size.',
-                'It adapts its behavior based on the distribution of input values.',
-                'It adapts its behavior based on whether the input is sorted or not.',
-                'It adapts its behavior based on the available memory space.',
+                'From the middle',
+                'From the end',
+                'From the beginning',
+                'Randomly',
             ],
             correctAnswer: 2
         },
@@ -197,12 +197,12 @@ export const testQuestions = {
             correctAnswer: 0
         },
         {
-            question: 'Insertion Sort is efficient for:',
+            question: 'If an array contains only unique elements, how many comparisons are made in the worst-case scenario during Insertion Sort?',
             answers: [
-                'Large datasets with a random distribution of elements.',
-                'Almost sorted or small datasets.',
-                'Datasets with a reverse-sorted order.',
-                'Datasets containing only distinct elements.',
+                'n/2',
+                'n - 1',
+                'n^2',
+                '2n',
             ],
             correctAnswer: 1
         },
