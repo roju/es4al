@@ -210,7 +210,7 @@ function checkAnswers(singleUserData) {
 }
 
 function getSelectedAnswer(questionIndex) {
-    var radioButtons = document.getElementsByName("question" + questionIndex);
+    var radioButtons = document.getElementsByName(`Question ${questionIndex + 1}`);
     for (var i = 0; i < radioButtons.length; i++) {
         if (radioButtons[i].checked) {
             return Number(radioButtons[i].value);
