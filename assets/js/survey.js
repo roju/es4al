@@ -83,7 +83,6 @@ function showTmSpcCmplxExpl() {
         explanationContainer.innerHTML = '';
         tmSpcCmplxExplLink.innerHTML = 'What is time/space complexity?';
     }
-
 }
 
 function generateQuestions() {
@@ -203,8 +202,11 @@ function checkAnswers(singleUserData) {
     var preTestScoreText = document.createElement("p");
     var postTestScoreText = document.createElement("p");
     const { preTestScore, postTestScore } = singleUserData;
-    preTestScoreText.textContent = `Pre-test score: ${preTestScore}%`;
-    postTestScoreText.textContent = `Post-test score: ${postTestScore}%`;
+    const questionCount = testQuestions[`${algorithm}`].length;
+    const preTestCorrectCount = (preTestScore / 100) * questionCount;
+    const postTestCorrectCount = (postTestScore / 100) * questionCount;
+    preTestScoreText.textContent = `Pre-test score: ${preTestCorrectCount}/${questionCount}`;
+    postTestScoreText.textContent = `Post-test score: ${postTestCorrectCount}/${questionCount}`;
     resultContainer.appendChild(preTestScoreText);
     resultContainer.appendChild(postTestScoreText);
 }
