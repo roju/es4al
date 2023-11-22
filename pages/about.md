@@ -3,7 +3,7 @@ layout: page
 title: About
 ---
 
-The purpose of this study is to analyze the effectiveness of different teaching methods for students learning about sorting algorithms.
+The purpose of this study is to analyze the effectiveness of different teaching methods for students or anyone who is learning about sorting algorithms.
 
 In this study, participants will:
 
