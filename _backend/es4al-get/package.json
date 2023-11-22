@@ -1,0 +1,9 @@
+{
+  "name": "es4al-get",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.mjs",
+  "scripts": {
+    "publish": "zip -r function.zip package.json *.js && aws lambda update-function-code --function-name es4al-get --zip-file fileb://function.zip && rm function.zip"
+  }
+}
