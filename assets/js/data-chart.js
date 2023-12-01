@@ -1,27 +1,26 @@
-import { chartColors, categories } from './constants.js'
+import { chartColors, categories } from './constants.mjs'
 
 var userData;
 var userDataChart;
 var chartOptions = {
-    colorCategory: 'learningMethod',
-    xAxisCategory: 'algorithm'
+    algorithm: 'all',
+    learningMethod: 'all',
+    colorCategory: 'ageGroup',
+    xAxisCategory: 'all',
+    testScoreDisplay: 'improvement' // improvement | stacked
 };
 
 document.addEventListener("DOMContentLoaded", async function() {
-    var colorCatRadios = document.getElementsByName("radio-cc");
-    if (colorCatRadios) {
-        for (var i = 0; i < colorCatRadios.length; i++) {
-            colorCatRadios[i].addEventListener("click", colorCatOptionChanged);
-        }
-    }
-    var xAxisCatRadios = document.getElementsByName("radio-xc");
-    if (xAxisCatRadios) {
-        for (var i = 0; i < xAxisCatRadios.length; i++) {
-            xAxisCatRadios[i].addEventListener("click", xAxisCatOptionChanged);
-        }
-    }
+    addRadioGroupClickListener('radio-cc', colorCatOptionChanged);
+    addRadioGroupClickListener('radio-xc', xAxisCatOptionChanged);
+    addRadioGroupClickListener('radio-a', algorithmOptionChanged);
+    addRadioGroupClickListener('radio-lm', learningMethodOptionChanged);
+    addRadioGroupClickListener('radio-ts', testScoreDisplayOptionChanged);
+    hideDuplicateCategoryOption('radio-cc');
+    hideDuplicateCategoryOption('radio-xc');
+
     userData = await getUserData();
-    userData.forEach(student => student.ageGroup = getAgeGroup(student.age));
+    userData.forEach(user => user.ageGroup = getAgeGroup(user.age));
     // console.log(JSON.stringify(userData, null, 2));
 
     // Show chart canvas and hide loading indicator
@@ -35,26 +34,33 @@ document.addEventListener("DOMContentLoaded", async function() {
 
 function getChartDatasets(userData, chartOptions) {
     var datasets = [];
+    const filteredUserData = getFilteredUserData(userData, chartOptions);
     const colorCategoryItems = categories[chartOptions.colorCategory];
     colorCategoryItems.forEach((colorCategoryItem, index) => {
-        const barData = getDataForItem(userData, index, chartOptions);
+        const barData = getDataForItem(filteredUserData, index, chartOptions);
         // Don't include color category items with no data
         if (barData.preTestAvgs.every(s => s == 0)) return;
         // Lower portion of the bar
-        datasets.push({
-            label: `${colorCategoryItem} (pre)`,
-            data: barData.preTestAvgs, // Pre-test score averages
-            backgroundColor: `rgba(${chartColors[index]}, 0.8)`,
-            borderColor: `rgba(${chartColors[index]}, 1)`,
-            borderWidth: 1,
-            stack: `Stack ${index}`
-        });
+        if (chartOptions.testScoreDisplay == 'stacked') {
+            datasets.push({
+                label: `${colorCategoryItem} (pre-test score)`,
+                data: barData.preTestAvgs, // Pre-test score averages
+                backgroundColor: `rgba(${chartColors[index]}, 0.8)`,
+                borderColor: `rgba(${chartColors[index]}, 1)`,
+                borderWidth: 1,
+                stack: `Stack ${index}`
+            });
+        }
         // Upper portion of the bar
+        var scoreImprvOpacity = 0.4;
+        if (chartOptions.testScoreDisplay == 'improvement') {
+            scoreImprvOpacity = 0.8;
+        }
         datasets.push({
-            label: `${colorCategoryItem} (post)`,
+            label: `${colorCategoryItem} (score improvement)`,
             data: barData.impvtAvgs, // Score improvement averages
-            backgroundColor: `rgba(${chartColors[index]}, 0.4)`,
-            borderColor: `rgba(${chartColors[index]}, 0.5)`,
+            backgroundColor: `rgba(${chartColors[index]}, ${scoreImprvOpacity})`,
+            borderColor: `rgba(${chartColors[index]}, ${scoreImprvOpacity})`,
             borderWidth: 1,
             stack: `Stack ${index}`
         })
@@ -76,37 +82,132 @@ function createChart(datasets, chartOptions) {
       options: {
         scales: {
             x: {stacked: true},
-            y: {stacked: true}
+            y: {
+                stacked: true,
+                title: {
+                    display: true,
+                    text: 'Test Score % Average',
+                    // font: {size: 25}
+                }
+            }
         },
-      }
+        plugins: {
+            htmlLegend: {
+                containerID: 'legend-container',
+              },
+              legend: {
+                display: false,
+            }
+        }
+      },
+      plugins: [htmlLegendPlugin],
     });
 }
 
-function getDataForItem(allUserData, colorCategoryItemIndex, chartOptions) {
-    // Get all students for the current color category item
-    const colorItemStudents = allUserData.filter(student =>
-        student[chartOptions.colorCategory] == colorCategoryItemIndex);
+const getOrCreateLegendList = (chart, id) => {
+    const legendContainer = document.getElementById(id);
+    let listContainer = legendContainer.querySelector('div');
 
+    if (!listContainer) {
+      listContainer = document.createElement('div');
+      listContainer.style.flexDirection = 'row';
+      listContainer.style.margin = 0;
+      listContainer.style.padding = 0;
+
+      legendContainer.appendChild(listContainer);
+    }
+
+    return listContainer;
+  };
+
+const htmlLegendPlugin = {
+    id: 'htmlLegend',
+    afterUpdate(chart, args, options) {
+      const ul = getOrCreateLegendList(chart, options.containerID);
+
+      // Remove old legend items
+      while (ul.firstChild) {
+        ul.firstChild.remove();
+      }
+
+      // Reuse the built-in legendItems generator
+      const items = chart.options.plugins.legend.labels.generateLabels(chart);
+
+      items.forEach((item, index) => {
+        if (chartOptions.testScoreDisplay == 'stacked' && index % 2 == 1) return;
+        const div = document.createElement('div');
+        div.style.alignItems = 'center';
+        div.style.cursor = 'pointer';
+        div.style.display = 'flex';
+        div.style.flexDirection = 'row';
+        div.style.marginLeft = '10px';
+
+        div.onclick = () => {
+          chart.setDatasetVisibility(item.datasetIndex, !chart.isDatasetVisible(item.datasetIndex));
+          if (chartOptions.testScoreDisplay == 'stacked') {
+            chart.setDatasetVisibility(item.datasetIndex+1, !chart.isDatasetVisible(item.datasetIndex+1));
+          }
+          chart.update();
+        };
+
+        // Color box
+        const boxSpan = document.createElement('span');
+        boxSpan.style.background = item.fillStyle;
+        boxSpan.style.borderColor = item.strokeStyle;
+        boxSpan.style.borderWidth = item.lineWidth + 'px';
+        boxSpan.style.display = 'inline-block';
+        boxSpan.style.flexShrink = 0;
+        boxSpan.style.height = '20px';
+        boxSpan.style.marginRight = '10px';
+        boxSpan.style.width = '20px';
+
+        // Text
+        const textContainer = document.createElement('p');
+        textContainer.style.color = item.fontColor;
+        textContainer.style.margin = 0;
+        textContainer.style.padding = 0;
+        textContainer.style.textDecoration = item.hidden ? 'line-through' : '';
+        // Remove all text in parentheses so it only shows on chart hover, not in legend
+        const text = document.createTextNode(item.text.replace(/\([^)]*\)/g, ''));
+        textContainer.appendChild(text);
+
+        div.appendChild(boxSpan);
+        div.appendChild(textContainer);
+        ul.appendChild(div);
+      });
+    }
+  };
+
+function getDataForItem(userData, colorCategoryItemIndex, chartOptions) {
+    var filteredUsers = userData;
     var barData = {
         preTestAvgs: [], // List of pre-test score averages
         impvtAvgs: [] // // List of score improvement averages
     };
+    if (chartOptions.colorCategory != 'all') {
+        // Get all users for the current color category item
+        filteredUsers = userData.filter(user =>
+            user[chartOptions.colorCategory] == colorCategoryItemIndex);
+    }
     // Iterate through all the x axis category items
     for (let i = 0; i < categories[chartOptions.xAxisCategory].length; i++) {
-        // Get all students for the current x axis category item
-        const xItemStudents = colorItemStudents.filter(student =>
-            student[chartOptions.xAxisCategory] == i);
+        var xItemUsers = filteredUsers;
+        if (chartOptions.xAxisCategory != 'all') {
+            // Get all users for the current x axis category item
+            xItemUsers = filteredUsers.filter(user =>
+                user[chartOptions.xAxisCategory] == i);
+        }
         // Leave an empty space without a bar when there is no data
-        if (xItemStudents.length == 0) {
+        if (xItemUsers.length == 0) {
             barData.preTestAvgs.push(0);
             barData.impvtAvgs.push(0);
             continue;
         }
         // Find the pre-test and post-test score averages
-        const preTestAvg = xItemStudents.reduce((acc, cur) =>
-            acc + cur.preTestScore, 0) / xItemStudents.length;
-        const postTestAvg = xItemStudents.reduce((acc, cur) =>
-            acc + cur.postTestScore, 0) / xItemStudents.length;
+        const preTestAvg = xItemUsers.reduce((acc, cur) =>
+            acc + cur.preTestScore, 0) / xItemUsers.length;
+        const postTestAvg = xItemUsers.reduce((acc, cur) =>
+            acc + cur.postTestScore, 0) / xItemUsers.length;
 
         // Pre-test score average is the lower portion of the bar
         barData.preTestAvgs.push(preTestAvg);
@@ -116,7 +217,30 @@ function getDataForItem(allUserData, colorCategoryItemIndex, chartOptions) {
     return barData;
 }
 
+function getFilteredUserData(allUserData, chartOptions) {
+    var filteredUserData = allUserData;
+    if (chartOptions.algorithm != 'all') {
+        filteredUserData = filteredUserData.filter(user =>
+            user.algorithm == chartOptions.algorithm);
+    }
+    if (chartOptions.learningMethod != 'all') {
+        filteredUserData = filteredUserData.filter(user =>
+            user.learningMethod == chartOptions.learningMethod);
+    }
+    return filteredUserData;
+}
+
+function addRadioGroupClickListener(groupName, callback) {
+    var radios = document.getElementsByName(groupName);
+    if (radios) {
+        for (var i = 0; i < radios.length; i++) {
+            radios[i].addEventListener("click", callback);
+        }
+    }
+}
+
 function colorCatOptionChanged() {
+    hideDuplicateCategoryOption('radio-cc');
     const colorCatOption = getChartOptionValue('radio-cc');
     chartOptions.colorCategory = colorCatOption;
     userDataChart.data.datasets = getChartDatasets(userData, chartOptions);
@@ -124,6 +248,7 @@ function colorCatOptionChanged() {
 }
 
 function xAxisCatOptionChanged() {
+    hideDuplicateCategoryOption('radio-xc');
     const xAxisCatOption = getChartOptionValue('radio-xc');
     chartOptions.xAxisCategory = xAxisCatOption;
     userDataChart.data.datasets = getChartDatasets(userData, chartOptions);
@@ -131,14 +256,35 @@ function xAxisCatOptionChanged() {
     userDataChart.update();
 }
 
+function algorithmOptionChanged() {
+    const optionValue = getChartOptionValue('radio-a');
+    chartOptions.algorithm = optionValue;
+    userDataChart.data.datasets = getChartDatasets(userData, chartOptions);
+    userDataChart.update();
+}
+
+function learningMethodOptionChanged() {
+    const optionValue = getChartOptionValue('radio-lm');
+    chartOptions.learningMethod = optionValue;
+    userDataChart.data.datasets = getChartDatasets(userData, chartOptions);
+    userDataChart.update();
+}
+
+function testScoreDisplayOptionChanged() {
+    const optionValue = getChartOptionValue('radio-ts');
+    chartOptions.testScoreDisplay = optionValue;
+    userDataChart.data.datasets = getChartDatasets(userData, chartOptions);
+    userDataChart.update();
+}
+
 function getChartOptionValue(name) {
     var radios = document.getElementsByName(name);
     var option = '';
-    for (var i = 0, length = radios.length; i < length; i++) {
+    for (var i = 0; i < radios.length; i++) {
         if (radios[i].checked) {
             option = radios[i].value;
            break;
-         }
+        }
     }
     return option;
 };
@@ -172,3 +318,51 @@ async function getUserData() {
         console.log(err);
     }
 }
+
+function hideDuplicateCategoryOption(radioCategory) {
+    const colorRadioName = 'radio-cc';
+    const xAxisRadioName = 'radio-xc';
+    const otherCatRadioName = radioCategory == colorRadioName ? xAxisRadioName : colorRadioName;
+    const changedOptionRadios = document.getElementsByName(radioCategory);
+
+    for (let i = 1; i < changedOptionRadios.length; i++) {
+        const otherCatItemDisplay = changedOptionRadios[i].checked ? 'none' : 'block';
+        document.getElementById(`${otherCatRadioName}-${i}`).style.display=otherCatItemDisplay;
+    }
+}
+
+// function handleInvalidSelections(columnName) {
+//     selectNextAvailableOption('radio-cc', columnName);
+//     colorCatOptionChanged();
+//     selectNextAvailableOption('radio-xc', columnName);
+//     xAxisCatOptionChanged();
+// }
+
+// function optionIsValid(radioButton, columnName) {
+//     const outerDiv = window.getComputedStyle(radioButton.parentNode);
+//     return (
+//         outerDiv.display != 'none'
+//         && radioButton.value != columnName
+//     )
+// }
+
+// function selectNextAvailableOption(radioCategory, columnName) {
+//     const radios = document.getElementsByName(radioCategory);
+//     const selectedRadioButton = Array.from(radios).find(r => r.checked);
+//     if (optionIsValid(selectedRadioButton, columnName)) return;
+//     selectedRadioButton.checked = false;
+//     for (let i = 0; i < radios.length; i++) {
+//         if (optionIsValid(radios[i], columnName)) {
+//             radios[i].checked = true;
+//             break;
+//         }
+//     }
+// }
+
+// function shouldShowOptionContainer(container, shouldShow) {
+//     const elements = document.getElementsByName(container);
+//     const displayType = shouldShow ? 'block' : 'none';
+//     for (let i = 0; i < elements.length; i++) {
+//         elements[i].style.display = displayType;
+//     }
+// }

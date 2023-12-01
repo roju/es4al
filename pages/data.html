@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Data
+title: Learning Effectiveness Results
 ---
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js"></script>
@@ -8,17 +8,27 @@ title: Data
 
 <style>
     .options-container {
-        max-width: 400px;
         margin: 20px auto;
         display: flex;
         justify-content: space-between;
     }
-    .option {
-        width: 48%;
-        margin-bottom: 10px;
-    }
 </style>
 
+<div style="display: flex; justify-content: space-between;">
+    <div id="legend-container" class="legend-container"></div>
+    <div>
+        <label>Test Score Display</label>
+        <div id="radio-ts-0">
+            <input type="radio" name="radio-ts" value="improvement" checked>
+            <label>Improvement Only</label>
+        </div>
+        <div id="radio-ts-1">
+            <input type="radio" name="radio-ts" value="stacked">
+            <label>Pre-test + Improvement</label>
+        </div>
+    </div>
+</div>
+<br>
 <div id="chartCanvas" style="display:none;">
     <canvas id="userDataChart" width="400" height="200"></canvas>
 </div>
@@ -29,60 +39,127 @@ title: Data
 
 <div class="options-container">
     <div class="option">
-        <label>Color Category</label>
+        <label>Algorithm</label>
         <br>
-        <div>
-            <input type="radio" name="radio-cc" value="ageGroup">
-            <label>Age Group</label>
+        <div id="radio-a-4">
+            <input type="radio" name="radio-a" value="all" checked>
+            <label>All Algorithms</label>
         </div>
-        <div>
-            <input type="radio" name="radio-cc" value="csMajor">
-            <label>CS Major</label>
+        <div id="radio-a-0">
+            <input type="radio" name="radio-a" value="0">
+            <label>Bubble Sort</label>
         </div>
-        <div>
-            <input type="radio" name="radio-cc" value="educationLevel">
-            <label>Education Level</label>
+        <div id="radio-a-1">
+            <input type="radio" name="radio-a" value="1">
+            <label>Quick Sort</label>
         </div>
-        <div>
-            <input type="radio" name="radio-cc" value="race">
-            <label>Race</label>
+        <div id="radio-a-2">
+            <input type="radio" name="radio-a" value="2">
+            <label>Merge Sort</label>
         </div>
-        <div>
-            <input type="radio" name="radio-cc" value="algorithm">
-            <label>Algorithm</label>
-        </div>
-        <div>
-            <input type="radio" name="radio-cc" value="learningMethod" checked>
-            <label>Learning Method</label>
+        <div id="radio-a-3">
+            <input type="radio" name="radio-a" value="3">
+            <label>Insertion Sort</label>
         </div>
     </div>
-
+    <div class="option">
+        <label>Learning Method</label>
+        <br>
+        <div id="radio-lm-3">
+            <input type="radio" name="radio-lm" value="all" checked>
+            <label>All Methods</label>
+        </div>
+        <div id="radio-lm-0">
+            <input type="radio" name="radio-lm" value="0">
+            <label>KLA Dance</label>
+        </div>
+        <div id="radio-lm-1">
+            <input type="radio" name="radio-lm" value="1">
+            <label>Animation</label>
+        </div>
+        <div id="radio-lm-2">
+            <input type="radio" name="radio-lm" value="2">
+            <label>Lecture</label>
+        </div>
+    </div>
     <div class="option">
         <label>X-Axis Category</label>
         <br>
-        <div>
+        <div id="radio-xc-0">
+            <input type="radio" name="radio-xc" value="all" checked>
+            <label>All Users</label>
+        </div>
+        <div id="radio-xc-1">
             <input type="radio" name="radio-xc" value="ageGroup">
             <label>Age Group</label>
         </div>
-        <div>
+        <div id="radio-xc-2">
             <input type="radio" name="radio-xc" value="csMajor">
             <label>CS Major</label>
         </div>
-        <div>
+        <div id="radio-xc-3">
             <input type="radio" name="radio-xc" value="educationLevel">
             <label>Education Level</label>
         </div>
-        <div>
+        <div id="radio-xc-4">
             <input type="radio" name="radio-xc" value="race">
             <label>Race</label>
         </div>
-        <div>
-            <input type="radio" name="radio-xc" value="algorithm" checked>
-            <label>Algorithm</label>
+        <!-- <div name="algo-option-container">
+            <div id="radio-xc-4">
+                <input type="radio" name="radio-xc" value="algorithm">
+                <label>Algorithm</label>
+            </div>
         </div>
-        <div>
-            <input type="radio" name="radio-xc" value="learningMethod">
-            <label>Learning Method</label>
+        <div name="lm-option-container">
+            <div id="radio-xc-5">
+                <input type="radio" name="radio-xc" value="learningMethod">
+                <label>Learning Method</label>
+            </div>
+        </div> -->
+        <div id="radio-xc-5">
+            <input type="radio" name="radio-xc" value="learnedBefore">
+            <label>Learned Before</label>
+        </div>
+    </div>
+    <div class="option">
+        <label>Color Category</label>
+        <br>
+        <div id="radio-cc-0">
+            <input type="radio" name="radio-cc" value="all">
+            <label>All Users</label>
+        </div>
+        <div id="radio-cc-1">
+            <input type="radio" name="radio-cc" value="ageGroup" checked>
+            <label>Age Group</label>
+        </div>
+        <div id="radio-cc-2">
+            <input type="radio" name="radio-cc" value="csMajor">
+            <label>CS Major</label>
+        </div>
+        <div id="radio-cc-3">
+            <input type="radio" name="radio-cc" value="educationLevel">
+            <label>Education Level</label>
+        </div>
+        <div id="radio-cc-4">
+            <input type="radio" name="radio-cc" value="race">
+            <label>Race</label>
+        </div>
+        <!-- <div name="algo-option-container">
+            <div id="radio-cc-4">
+                <input type="radio" name="radio-cc" value="algorithm">
+                <label>Algorithm</label>
+            </div>
+        </div>
+        <div name="lm-option-container">
+            <div id="radio-cc-5">
+                <input type="radio" name="radio-cc" value="learningMethod" checked>
+                <label>Learning Method</label>
+            </div>
+        </div> -->
+        <div id="radio-cc-5">
+            <input type="radio" name="radio-cc" value="learnedBefore">
+            <label>Learned Before</label>
         </div>
     </div>
 </div>
