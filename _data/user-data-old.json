@@ -1,0 +1,165 @@
+{
+  "userData": [
+    {
+      "age": 32,
+      "csMajor": 1,
+      "educationLevel": 2,
+      "race": 6,
+      "algorithm": 0,
+      "learningMethod": 0,
+      "preTestScore": 55,
+      "postTestScore": 70,
+      "learnedBefore": 0
+    },
+    {
+      "age": 28,
+      "csMajor": 0,
+      "educationLevel": 1,
+      "race": 1,
+      "algorithm": 1,
+      "learningMethod": 1,
+      "preTestScore": 60,
+      "postTestScore": 80
+    },
+    {
+      "age": 59,
+      "csMajor": 0,
+      "educationLevel": 3,
+      "race": 6,
+      "algorithm": 2,
+      "learningMethod": 2,
+      "preTestScore": 60,
+      "postTestScore": 85
+    },
+    {
+      "age": 40,
+      "csMajor": 0,
+      "educationLevel": 2,
+      "race": 3,
+      "algorithm": 3,
+      "learningMethod": 0,
+      "preTestScore": 90,
+      "postTestScore": 100
+    },
+    {
+      "age": 20,
+      "csMajor": 1,
+      "educationLevel": 2,
+      "race": 1,
+      "algorithm": 0,
+      "learningMethod": 1,
+      "preTestScore": 90,
+      "postTestScore": 100
+    },
+    {
+      "age": 56,
+      "csMajor": 0,
+      "educationLevel": 5,
+      "race": 2,
+      "algorithm": 1,
+      "learningMethod": 2,
+      "preTestScore": 50,
+      "postTestScore": 100
+    },
+    {
+      "age": 33,
+      "csMajor": 0,
+      "educationLevel": 3,
+      "race": 1,
+      "algorithm": 2,
+      "learningMethod": 0,
+      "preTestScore": 75,
+      "postTestScore": 100
+    },
+    {
+      "age": 19,
+      "csMajor": 0,
+      "educationLevel": 1,
+      "race": 1,
+      "algorithm": 3,
+      "learningMethod": 1,
+      "preTestScore": 100,
+      "postTestScore": 100
+    },
+    {
+      "age": 27,
+      "csMajor": 1,
+      "educationLevel": 1,
+      "race": 7,
+      "algorithm": 0,
+      "learningMethod": 2,
+      "preTestScore": 60,
+      "postTestScore": 90
+    },
+    {
+      "age": 61,
+      "csMajor": 0,
+      "educationLevel": 4,
+      "race": 6,
+      "algorithm": 1,
+      "learningMethod": 0,
+      "preTestScore": 100,
+      "postTestScore": 100
+    },
+    {
+      "age": 45,
+      "csMajor": 0,
+      "educationLevel": 3,
+      "race": 4,
+      "algorithm": 2,
+      "learningMethod": 1,
+      "preTestScore": 50,
+      "postTestScore": 80
+    },
+    {
+      "age": 16,
+      "csMajor": 0,
+      "educationLevel": 0,
+      "race": 3,
+      "algorithm": 3,
+      "learningMethod": 2,
+      "preTestScore": 20,
+      "postTestScore": 40
+    },
+    {
+      "age": 17,
+      "csMajor": 0,
+      "educationLevel": 0,
+      "race": 6,
+      "algorithm": 0,
+      "learningMethod": 0,
+      "preTestScore": 40,
+      "postTestScore": 90
+    },
+    {
+      "age": 26,
+      "csMajor": 1,
+      "educationLevel": 2,
+      "race": 3,
+      "algorithm": 1,
+      "learningMethod": 1,
+      "preTestScore": 80,
+      "postTestScore": 90
+    },
+    {
+      "age": 28,
+      "csMajor": 1,
+      "educationLevel": 2,
+      "race": 1,
+      "algorithm": 2,
+      "learningMethod": 2,
+      "preTestScore": 80,
+      "postTestScore": 100
+    },
+    {
+      "age": 22,
+      "csMajor": 1,
+      "educationLevel": 2,
+      "race": 1,
+      "algorithm": 3,
+      "learningMethod": 0,
+      "preTestScore": 70,
+      "postTestScore": 80
+    }
+  ]
+}
