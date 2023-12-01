@@ -26,7 +26,7 @@ author: Willow Justin
 
 navbar-links:
   About: "pages/about"
-  Results: "pages/data"
+  Results: "pages/results"
   Videos: "pages/video-gallery"
 
 ################
