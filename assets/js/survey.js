@@ -1,4 +1,4 @@
-import { videoIds, tmSpcCmplxExpl } from './constants.js'
+import { videoIds, tmSpcCmplxExpl, categories } from './constants.mjs'
 import { testQuestions } from './test-questions.js'
 const letterOptions = ['a', 'b', 'c', 'd'];
 
@@ -7,6 +7,7 @@ window.savePreTest = savePreTest;
 window.savePostTest = savePostTest;
 window.checkAnswers = checkAnswers;
 window.showTmSpcCmplxExpl = showTmSpcCmplxExpl;
+window.saveLearnedBefore = saveLearnedBefore;
 
 document.addEventListener("DOMContentLoaded", function() {
     if (window.location.pathname.endsWith('/video/')) {
@@ -43,6 +44,26 @@ async function saveStudentInfo() {
         console.log(assignments);
         singleUserData = { ...singleUserData, ...assignments };
         localStorage.clear();
+        localStorage.setItem('singleUserData', JSON.stringify(singleUserData));
+
+        var learnedBeforeQuestion = document.getElementById("learned-before-question-label");
+        const algorithmText = categories.algorithm[assignments.algorithm];
+        learnedBeforeQuestion.innerHTML = `Have you learned the ${algorithmText} algorithm before?`;
+        document.getElementById('learned-before-container').style.display = 'block';
+        document.getElementById('studentInfoLoader').style.display = 'none';
+        document.getElementById('learnedBeforeNext').style.display = 'block';
+    }
+    catch (err) {
+        console.error(err);
+        alert(err);
+    }
+}
+
+function saveLearnedBefore() {
+    try {
+        var singleUserData = getLocalSingleUserData();
+        const learnedBefore = getMultipleChoiceValue('Learned Before');
+        singleUserData.learnedBefore = learnedBefore;
         localStorage.setItem('singleUserData', JSON.stringify(singleUserData));
         window.location.href = '/pages/pre-test';
     }

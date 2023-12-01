@@ -100,8 +100,23 @@ title: Effectiveness Study For Algorithm Learning
                 </div>
             </div>
         </div>
+        <div id="learned-before-container" style="display: none;">
+            <label id="learned-before-question-label"></label>
+            <div>
+                <input name="Learned Before" id="Learned-0" value="1" type="radio">
+                <label>Yes</label>
+            </div>
+            <div>
+                <input name="Learned Before" id="Learned-1" value="0" type="radio">
+                <label>No</label>
+            </div>
+        </div>
+        <br>
         <div id="studentInfoNext">
             <button type="button" onclick="saveStudentInfo()">Next</button>
+        </div>
+        <div id="learnedBeforeNext" style="display: none;">
+            <button type="button" onclick="saveLearnedBefore()">Submit</button>
         </div>
         <div class="loader" id="studentInfoLoader"></div>
     </div>
