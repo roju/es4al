@@ -1,4 +1,4 @@
-import { videoIds } from './constants.js'
+import { videoIds } from './constants.mjs'
 
 window.showGalleryVideo = showGalleryVideo;
 

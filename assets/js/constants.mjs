@@ -90,10 +90,15 @@ export const categories = {
         'Insertion Sort'
     ],
     learningMethod: [
-        'Dance',
+        'KLA Dance',
         'Animation',
         'Lecture'
-    ]
+    ],
+    learnedBefore: [
+        'Not Learned',
+        'Learned'
+    ],
+    all: ['All Users']
 };
 
 // time and space complexity explanation
