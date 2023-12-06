@@ -1,25 +1,25 @@
 export const videoIds = [
     // Bubble
     [
-        "Iv3vgjM8Pv4", // Dance
+        "lyZQPjUT5B4", // Dance
         "9I2oOAr2okY", // Animation
         "A6m-g0SPzt0" // Lecture
     ],
     // Quick
     [
-        "3San3uKKHgg", // Dance
+        "ywWBy6J5gz8", // Dance
         "WprjBK0p6rw", // Animation
         "ZHVk2blR45Q" // Lecture
     ],
     // Merge
     [
-        "dENca26N6V4", // Dance
+        "XaqR3G_NVoo", // Dance
         "5Z9dn2WTg9o", // Animation
         "qdv3i6X0PiQ" // Lecture
     ],
     // Insertion
     [
-        "EdIKIf9mHk0", // Dance
+        "ROalU379l3U", // Dance
         "JU767SDMDvA", // Animation
         "eTvQIbB-AuE" // Lecture
     ]
