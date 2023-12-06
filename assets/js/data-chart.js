@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     // Render chart
     const datasets = getChartDatasets(userData, chartOptions);
     userDataChart = createChart(datasets, chartOptions);
+    // updateChartDescriptionText();
 });
 
 function getChartDatasets(userData, chartOptions) {
@@ -244,7 +245,7 @@ function colorCatOptionChanged() {
     const colorCatOption = getChartOptionValue('radio-cc');
     chartOptions.colorCategory = colorCatOption;
     userDataChart.data.datasets = getChartDatasets(userData, chartOptions);
-    userDataChart.update();
+    updateChart();
 }
 
 function xAxisCatOptionChanged() {
@@ -253,28 +254,94 @@ function xAxisCatOptionChanged() {
     chartOptions.xAxisCategory = xAxisCatOption;
     userDataChart.data.datasets = getChartDatasets(userData, chartOptions);
     userDataChart.data.labels = categories[chartOptions.xAxisCategory];
-    userDataChart.update();
+    updateChart();
 }
 
 function algorithmOptionChanged() {
     const optionValue = getChartOptionValue('radio-a');
     chartOptions.algorithm = optionValue;
     userDataChart.data.datasets = getChartDatasets(userData, chartOptions);
-    userDataChart.update();
+    updateChart();
 }
 
 function learningMethodOptionChanged() {
     const optionValue = getChartOptionValue('radio-lm');
     chartOptions.learningMethod = optionValue;
     userDataChart.data.datasets = getChartDatasets(userData, chartOptions);
-    userDataChart.update();
+    updateChart();
 }
 
 function testScoreDisplayOptionChanged() {
     const optionValue = getChartOptionValue('radio-ts');
     chartOptions.testScoreDisplay = optionValue;
     userDataChart.data.datasets = getChartDatasets(userData, chartOptions);
+    updateChart();
+}
+
+function updateChart() {
+    // updateChartDescriptionText();
     userDataChart.update();
+}
+
+function getMostImprovedScoreInfo(userData, chartOptions) {
+    var highScoreBarInfo = [];
+    const filteredUserData = getFilteredUserData(userData, chartOptions);
+    const colorCategoryItems = categories[chartOptions.colorCategory];
+    colorCategoryItems.forEach((colorItemName, index) => {
+        const barData = getDataForItem(filteredUserData, index, chartOptions);
+        let scores = barData.impvtAvgs;
+        let highestScore = scores[0];
+        let highestScoreIndex = 0;
+        for (let i = 1; i < scores.length; i++) {
+            if (scores[i] > highestScore) {
+                highestScore = scores[i];
+                highestScoreIndex = i;
+            }
+        }
+        const xAxisItemName = categories[chartOptions.xAxisCategory][highestScoreIndex];
+        highScoreBarInfo.push({
+            colorItemName,
+            xAxisItemName,
+            highestScore
+        });
+    });
+    const highestScoreBarInfo = highScoreBarInfo.reduce((highest, current) =>
+        (current.highestScore > highest.highestScore ? current : highest),
+        highScoreBarInfo[0]
+    );
+    return {
+        colorItem: highestScoreBarInfo.colorItemName,
+        xAxisItem: highestScoreBarInfo.xAxisItemName
+    }
+}
+
+function updateChartDescriptionText() {
+    // var chartDescriptionLabel = document.getElementById('chart-description-text');
+    // var description = 'For ';
+    // if (chartOptions.algorithm == 'all' && chartOptions.learningMethod == 'all') {
+    //     description += 'all users, ';
+    // }
+    // else if (chartOptions.algorithm != 'all' && chartOptions.learningMethod != 'all') {
+    //     description += `users who were assigned the ${chartOptions.algorithm} algorithm and the ${chartOptions.learningMethod} learning method, `;
+    // }
+    // else {
+    //     if (chartOptions.algorithm != 'all') {
+    //         description += `users who were assigned the ${chartOptions.algorithm} algorithm, `;
+    //     }
+    //     if (chartOptions.learningMethod != 'all') {
+    //         description += `users who were assigned the ${chartOptions.learningMethod} learning method, `;
+    //     }
+    // }
+    // switch (chartOptions.xAxisCategory) {
+    //     case 'ageGroup':
+    //         description += `ages `;
+    //         break;
+
+    //     default:
+    //         break;
+    // }
+
+    // chartDescriptionLabel.innerHTML = description;
 }
 
 function getChartOptionValue(name) {
