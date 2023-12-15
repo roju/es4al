@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     // Render chart
     const datasets = getChartDatasets(userData, chartOptions);
     userDataChart = createChart(datasets, chartOptions);
-    // updateChartDescriptionText();
+    updateChartDescriptionText();
 });
 
 function getChartDatasets(userData, chartOptions) {
@@ -279,16 +279,17 @@ function testScoreDisplayOptionChanged() {
 }
 
 function updateChart() {
-    // updateChartDescriptionText();
+    updateChartDescriptionText();
     userDataChart.update();
 }
 
-function getMostImprovedScoreInfo(userData, chartOptions) {
+function getMostImprovedScoreInfo() {
     var highScoreBarInfo = [];
     const filteredUserData = getFilteredUserData(userData, chartOptions);
     const colorCategoryItems = categories[chartOptions.colorCategory];
     colorCategoryItems.forEach((colorItemName, index) => {
         const barData = getDataForItem(filteredUserData, index, chartOptions);
+        if (barData.preTestAvgs.every(s => s == 0)) return;
         let scores = barData.impvtAvgs;
         let highestScore = scores[0];
         let highestScoreIndex = 0;
@@ -316,32 +317,75 @@ function getMostImprovedScoreInfo(userData, chartOptions) {
 }
 
 function updateChartDescriptionText() {
-    // var chartDescriptionLabel = document.getElementById('chart-description-text');
-    // var description = 'For ';
-    // if (chartOptions.algorithm == 'all' && chartOptions.learningMethod == 'all') {
-    //     description += 'all users, ';
-    // }
-    // else if (chartOptions.algorithm != 'all' && chartOptions.learningMethod != 'all') {
-    //     description += `users who were assigned the ${chartOptions.algorithm} algorithm and the ${chartOptions.learningMethod} learning method, `;
-    // }
-    // else {
-    //     if (chartOptions.algorithm != 'all') {
-    //         description += `users who were assigned the ${chartOptions.algorithm} algorithm, `;
-    //     }
-    //     if (chartOptions.learningMethod != 'all') {
-    //         description += `users who were assigned the ${chartOptions.learningMethod} learning method, `;
-    //     }
-    // }
-    // switch (chartOptions.xAxisCategory) {
-    //     case 'ageGroup':
-    //         description += `ages `;
-    //         break;
+    var chartDescriptionLabel = document.getElementById('chart-description-text');
+    var description = 'For ';
+    if (chartOptions.algorithm == 'all' && chartOptions.learningMethod == 'all') {
+        description += 'all users, ';
+    }
+    else if (chartOptions.algorithm != 'all' && chartOptions.learningMethod != 'all') {
+        description += `users who were assigned the ${categories.algorithm[chartOptions.algorithm]} algorithm and the ${categories.learningMethod[chartOptions.learningMethod]} learning method, `;
+    }
+    else {
+        if (chartOptions.algorithm != 'all') {
+            description += `users who were assigned the ${categories.algorithm[chartOptions.algorithm]} algorithm, `;
+        }
+        if (chartOptions.learningMethod != 'all') {
+            description += `users who were assigned the ${categories.learningMethod[chartOptions.learningMethod]} learning method, `;
+        }
+    }
+    const {colorItem, xAxisItem} = getMostImprovedScoreInfo();
 
-    //     default:
-    //         break;
-    // }
-
-    // chartDescriptionLabel.innerHTML = description;
+    switch (chartOptions.xAxisCategory) {
+        case 'ageGroup':
+            description += `ages `;
+            break;
+        case 'csMajor':
+            description += `those who were `;
+            break;
+        case 'educationLevel':
+            description += `those with education level `;
+            break;
+        case 'race':
+            description += `the racial group `;
+            break;
+        case 'learnedBefore':
+            description += `those who previously `;
+            break;
+        case 'all':
+        default:
+            break;
+    }
+    if (chartOptions.xAxisCategory != 'all') {
+        description += xAxisItem;
+    }
+    if (chartOptions.xAxisCategory != 'all' && chartOptions.colorCategory != 'all') {
+        description += ' and ';
+    }
+    switch (chartOptions.colorCategory) {
+        case 'ageGroup':
+            description += `ages `;
+            break;
+        case 'csMajor':
+            description += `those who were `;
+            break;
+        case 'educationLevel':
+            description += `those with education level `;
+            break;
+        case 'race':
+            description += `the racial group `;
+            break;
+        case 'learnedBefore':
+            description += `those who previously `;
+            break;
+        case 'all':
+        default:
+            break;
+    }
+    if (chartOptions.colorCategory != 'all') {
+        description += colorItem;
+    }
+    description += ' improved the most.';
+    chartDescriptionLabel.innerHTML = description;
 }
 
 function getChartOptionValue(name) {
